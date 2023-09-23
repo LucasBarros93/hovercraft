@@ -45,7 +45,8 @@ class Hover:
         # Dimensões da tela
         height, width, depth = image.shape
 
-        # Contabiliza o momento dos pixels laranjas da imagem
+        # Contabiliza o momento dos pixels laranjas da imagem, ignorando o centro
+        mask[0:height, 2*width/5:3*width/5] = 0 
         M = cv2.moments(mask)
 
         # Se existe laranja na câmera:
@@ -56,7 +57,7 @@ class Hover:
 
             # CONTROLE
             error = mx - width/2
-            self.twist.angular.z = -float(error) / 1000
+            self.twist.angular.z = -float(40/error)
             self.cmd_vel_pub.publish(self.twist)
             image = cv2.putText(image, str(error), (0,50), cv2.FONT_HERSHEY_SIMPLEX, 2, (50,150,255), 3, cv2.LINE_AA)
             
