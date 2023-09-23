@@ -46,7 +46,7 @@ class Hover:
         height, width, depth = image.shape
 
         # Contabiliza o momento dos pixels laranjas da imagem, ignorando o centro
-        mask[0:height, 2*width/5:3*width/5] = 0 
+        mask[0:height, int(2*width/5):int(3*width/5)] = 0 
         M = cv2.moments(mask)
 
         # Se existe laranja na câmera:
