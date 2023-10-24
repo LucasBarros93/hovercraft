@@ -7,18 +7,19 @@ Projeto de iniciação dos bixos no [Grupo SEMEAR](https://github.com/Grupo-SEME
 | :---: | 
 
 ## Proposta
-O projeto consiste na construção de um Hovercraft autônomo, capaz de perceber o mundo e tomar decisões de movimento. 
+**O projeto consiste na construção de um Hovercraft autônomo, capaz de perceber o mundo e tomar decisões de movimento.**
 
 Um Hovercraft é um veículo projetado para flutuar e se deslocar sobre uma camada de ar comprimido, criada por ventiladores que forçam o ar através de uma almofada de ar sob sua parte inferior. A embarcação flutua sobre a superfície e se desloca com relativa facilidade sobre diferentes tipos de terreno, incluindo água, gelo, pântanos e até mesmo terrenos acidentados. Isso é possível devido à combinação de uma almofada de ar e, geralmente, um motor que o propulsiona para frente.
 
 <div style="display: flex;">
-  <img src="https://howtomechatronics.com/wp-content/uploads/2019/03/How-Hovercraft-Works-Working-Principle.jpg?ezimgfmt=ng:webp/ngcb2" alt="Alt text" title="Optional title" style="margin-right: 10px; width: 50%;">
-  <img src="https://howtomechatronics.com/wp-content/uploads/2019/03/DIY-Arduino-RC-Hovercraft-Working-Principle.jpg?ezimgfmt=ng:webp/ngcb2" style="margin-left: 10px; width: 50%;">
+  <img src="images/hovercraft_lateral.webp" alt="Alt text" title="Optional title" style="margin-right: 10px; width: 50%;">
+  <img src="images/hovercraft_aerea.webp" style="margin-left: 10px; width: 50%;">
 </div>
 
 <figcaption style="font-size: 12px;">
     Fonte: <a href="https://howtomechatronics.com/projects/diy-arduino-based-rc-hovercraft/" style="text-decoration: underline;">https://howtomechatronics.com/projects/diy-arduino-based-rc-hovercraft/</a>
 </figcaption>
+
 
 ## Inspirações
 Citar aqui os links das inspirações, HowToMechatronics etc
