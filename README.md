@@ -12,8 +12,8 @@ Projeto de iniciação dos bixos no [Grupo SEMEAR](https://github.com/Grupo-SEME
 Um Hovercraft é um veículo projetado para flutuar e se deslocar sobre uma camada de ar comprimido, criada por ventiladores que forçam o ar através de uma almofada de ar sob sua parte inferior. A embarcação flutua sobre a superfície e se desloca com relativa facilidade sobre diferentes tipos de terreno, incluindo água, gelo, pântanos e até mesmo terrenos acidentados. Isso é possível devido à combinação de uma almofada de ar e, geralmente, um motor que o propulsiona para frente.
 
 <div style="display: flex;">
-  <img src="images/hovercraft_lateral.webp" alt="Alt text" title="Optional title" style="margin-right: 10px; width: 50%;">
-  <img src="images/hovercraft_aerea.webp" style="margin-left: 10px; width: 50%;">
+  <img src="images/hovercraft_lateral.webp" alt="Alt text" title="Optional title" style="margin-right: 10px; width: 40%;">
+  <img src="images/hovercraft_aerea.webp" style="margin-left: 10px; width: 40%;">
 </div>
 
 <figcaption style="font-size: 12px;">
