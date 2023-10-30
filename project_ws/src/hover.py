@@ -30,13 +30,13 @@ class Hover(object):
 
         # Definindo algumas variáveis para auxiliar no controle
         self.prev_error = 0.0
-        self.int_err = 0.0
+        self.int_error = 0.0    
 
     # Método que processa as imagens recebidas e toma a decisão
     def image_callback(self, msg):
 
         # Velocidade padrão do Hovercraft
-        self.twist.linear.x = 0.1
+        self.twist.linear.x =  0.4
         self.cmd_vel_pub.publish(self.twist)
         
         # Converte a mensagem em numpy array
@@ -58,16 +58,35 @@ class Hover(object):
         gM = cv2.moments(green_mask)
         rM = cv2.moments(red_mask)
 
-
+        xCM_green = 0
+        xCM_red = 0
         # Se existe verde ou vermelho na câmera:
         if gM['m00'] > 0 or rM['m00'] > 0:
 
-            # M['m10'] é o momento horizontal dos pixels (m * x / m = x)
-            xCM_green = int(gM['m10']/gM['m00'])
-            xCM_red = int(rM['m10']/rM['m00'])
+            if gM['m00'] > 0:
+                xCM_green = int(gM['m10']/gM['m00'])
+            else:
+                xCM_green = 0
 
+            if rM['m00'] > 0:
+                xCM_red = int(rM['m10']/rM['m00'])
+            else:
+                xCM_red = 0
+
+            # # M['m10'] é o momento horizontal dos pixels (m * x / m = x)
+            # xCM_green = int(gM['m10']/gM['m00'])
+            # xCM_red = int(rM['m10']/rM['m00'])
+            
             # Chamando o método que calcula o giro do Hovercraft
-            spin = self.controller(self, width, xCM_red - xCM_green)
+            #if xCM_green != 0 and xCM_red !=0:
+            xCM = (gM['m00']*xCM_green + rM['m00']*xCM_red)/(gM['m00'] + rM['m00'])
+            spin = self.controller(width, xCM)
+
+            #elif xCM_red == 0:
+             #   spin = self.controller(width, xCM_green)
+
+            #elif xCM_green == 0:
+             #   spin = self.controller(width, xCM_red)
 
             # Publicando o giro
             self.twist.angular.z = spin
@@ -76,6 +95,14 @@ class Hover(object):
         else:
             self.twist.angular.z = 0.0
             self.cmd_vel_pub.publish(self.twist)
+
+        #print(xCM_green, xCM_red)
+
+        try:
+            # Desenhe o círculo na imagem
+            cv2.circle(image, (int(np.ceil(xCM)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
+        except Exception as e:
+            print("no mass center found\n", e)
 
         # Mostra a imagem vista pelo hover
         cv2.imshow("Hover\'s Vision", image)
@@ -86,28 +113,28 @@ class Hover(object):
     def controller(self, width, xCM):
 
         # Constantes de controle PID
-        kp = 0.0
+        kp = 50.0
         ki = 0.0
-        kd = 0.0
+        kd = 10.0
 
         # O centro da imagem é igual a largura/2. O vermelho estará na direita e o verde na esquerda sempre.
         # Portanto, o erro é a diferença do centro das latinhas - o centro da imagem 
         #           centro da img   centro das latinhas
     
-        error = float(xCM - width/2.0)
+        error = - float(1/(xCM - width/2.0))
 
-        # Se xCM_red > xCM_green, erro  0. Portanto, deve virar a esquerda.
-        # Se xCM_red < xCM_green, erro  0. Portanto, deve virar a direita.
+        # Se xCM_red > xCM_green, erro > 0. Portanto, deve virar a esquerda.
+        # Se xCM_red < xCM_green, erro < 0. Portanto, deve virar a direita.
 
         # Cálculo da integral do erro
-        self.int_err = self.int_err + error
+        self.int_error = self.int_error + error
 
         # Cálculo da derivada do erro
-        der_err = error - self.prev_err
-        self.prev_err = error
+        der_error = error - self.prev_error
+        self.prev_error = error
 
         # Equação do controle PID
-        spin = kp * error + ki * self.int_err + kd * der_err
+        spin = kp * error + ki * self.int_error + kd * der_error
 
         return spin
 
