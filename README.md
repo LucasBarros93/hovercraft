@@ -3,8 +3,8 @@
 Projeto de iniciação dos bixos no [Grupo SEMEAR](https://github.com/Grupo-SEMEAR-USP), do Núcleo de Robótica Aérea (NRA).
 
 ## Autores 
-|  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/105023846?v=4" width=115><br><sub>Marco Garcia</sub>](https://github.com/marcogarcia2) |
-| :---: | 
+|  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/105023846?v=4" width=115><br><sub>Marco Garcia</sub>](https://github.com/marcogarcia2) |  [<img loadig="lazy"src="https://avatars.githubusercontent.com/u/106834796?v=4" width=115><br><sub>Thiago Gonçalves</sub>](https://github.com/thiagokg314)  |
+| :---: | : ---: |
 
 ## Proposta
 **O projeto consiste na construção de um Hovercraft autônomo, capaz de perceber o mundo e tomar decisões de movimento.**
