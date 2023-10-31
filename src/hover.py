@@ -100,7 +100,8 @@ class Hover(object):
 
         try:
             # Desenhe o círculo na imagem
-            cv2.circle(image, (int(np.ceil(xCM)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
+            point = xCM+(width/2) if xCM < width/2 else xCM-(width/2)
+            cv2.circle(image, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
         except Exception as e:
             print("no mass center found\n", e)
 
@@ -113,15 +114,21 @@ class Hover(object):
     def controller(self, width, xCM):
 
         # Constantes de controle PID
-        kp = 50.0
+        kp = .001
         ki = 0.0
-        kd = 10.0
+        kd = .000001
 
         # O centro da imagem é igual a largura/2. O vermelho estará na direita e o verde na esquerda sempre.
         # Portanto, o erro é a diferença do centro das latinhas - o centro da imagem 
         #           centro da img   centro das latinhas
-    
-        error = - float(1/(xCM - width/2.0))
+        
+        #VAMO LÁ
+
+        if (xCM < width/2):
+            error = float(xCM)
+        
+        elif (xCM > width/2):
+            error = float(xCM-(width))
 
         # Se xCM_red > xCM_green, erro > 0. Portanto, deve virar a esquerda.
         # Se xCM_red < xCM_green, erro < 0. Portanto, deve virar a direita.
