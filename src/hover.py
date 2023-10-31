@@ -47,16 +47,47 @@ class Hover(object):
         green_mask = cv2.inRange(hsv, self.green[0], self.green[1])
         red_mask = cv2.inRange(hsv, self.red[0], self.red[1])
 
+        # Criando a máscara que terá os dois maiores contornos para o verde
+        green_mask_largest = np.zeros_like(green_mask)
+        green_contours, _ = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if len(green_contours) >= 2:
+
+            # Classificando os contornos pelo tamanho em ordem crescente
+            green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
+
+            # Pegando os dois maiores contornos
+            green_largest_contours = green_contours[:2]
+
+            # Desenhando os dois maiores contornos na máscara
+            for contour in green_largest_contours:
+                cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
+
+        # Criando a máscara que terá os dois maiores contornos para o vermelho
+        red_mask_largest = np.zeros_like(red_mask)
+        red_contours, _ = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        if len(red_contours) >= 2:
+
+            # Classificando os contornos pelo tamanho em ordem crescente
+            red_contours = sorted(red_contours, key = cv2.contourArea, reverse = True)
+
+            # Pegando os dois maiores contornos
+            red_largest_contours = red_contours[:2]
+
+            # Desenhando os dois maiores contornos na máscara
+            for contour in red_largest_contours:
+                cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
+            
+
         # Dimensões da tela
         height, width, depth = image.shape
 
         # Ignorando o centro da máscara
-        green_mask[0:height, int(1*width/3):int(2*width/3)] = 0 
-        red_mask[0:height, int(1*width/3):int(2*width/3)] = 0 
+        green_mask[0:height, int(2*width/5):int(3*width/5)] = 0 
+        red_mask[0:height, int(2*width/5):int(3*width/5)] = 0 
 
         # Centro de massa dos pixels
-        gM = cv2.moments(green_mask)
-        rM = cv2.moments(red_mask)
+        gM = cv2.moments(green_mask_largest)
+        rM = cv2.moments(red_mask_largest)
 
         xCM_green = 0
         xCM_red = 0
@@ -115,7 +146,7 @@ class Hover(object):
         # Constantes de controle PID
         kp = 50.0
         ki = 0.0
-        kd = 10.0
+        kd = 0.0
 
         # O centro da imagem é igual a largura/2. O vermelho estará na direita e o verde na esquerda sempre.
         # Portanto, o erro é a diferença do centro das latinhas - o centro da imagem 
