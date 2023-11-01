@@ -72,7 +72,7 @@ All of our robot's code has been developed in `Python`. To command the system an
 The "heart" of our robot is a `Raspberry Pi`, which controls all the electronic components. It has been flashed with a Clover Image, designed specifically to operate on drones and contains all the necessary software for working with Clover and programming autonomous flights. The Clover platform is based on Raspbian OS (Source: https://clover.coex.tech/en/image.html).
 
 <p align="center">
-  <img src="images/rasp_3.jpg" alt="Raspberry Pi" width="200">
+  <img src="images/rasp3.jpeg" alt="Raspberry Pi" width="500">
 </p>
 <p align="center">
   <span style="font-size: 12px;">Raspberry Pi 3</span>
