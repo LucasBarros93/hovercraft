@@ -11,7 +11,7 @@ from geometry_msgs.msg import Twist
 class Control(object):
 
     # Construtor da classe Hover
-    def __init__(self):
+    def __init__(self)-> None:
 
         # Atalho converter a mensagem Image em imagem para OpenCV
         self.bridge = cv_bridge.CvBridge()
@@ -33,7 +33,7 @@ class Control(object):
          
         
     # Método responsável pelo controle PID do giro do Hovercraft
-    def controller(self, msg):
+    def controller(self, msg:Int32)-> None:
         
         last_error = msg.data
 

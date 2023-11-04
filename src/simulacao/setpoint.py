@@ -7,7 +7,7 @@ import numpy as np
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Int32
 
-def _map(value, from_low, from_high, to_low, to_high):
+def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:float)-> float:
     # Mapeia o valor de from_low/from_high para to_low/to_high
     return (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
 
@@ -18,7 +18,7 @@ class SetPoint(object): #qual é do 'object'?
     map = lambda value, from_low, from_high, to_low, to_high: (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
 
     # Construtor da classe Hover
-    def __init__(self):
+    def __init__(self)-> None:
 
         # Atalho converter a mensagem Image em imagem para OpenCV
         self.bridge = cv_bridge.CvBridge()
@@ -33,7 +33,7 @@ class SetPoint(object): #qual é do 'object'?
         self.green = np.array([[35, 100, 100], [85, 255, 255]])  #HSV
         self.red = np.array([[0, 100, 100], [10, 255, 255]]) #HSV
 
-    def image_callback(self, msg):
+    def image_callback(self, msg:Image)-> None:
         
         # Converte a mensagem em numpy array
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')

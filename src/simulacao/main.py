@@ -8,9 +8,10 @@ import numpy as np
 from control import Control
 from setpoint import SetPoint
 
-rospy.init_node('hover')
+if __name__ == "__main__":
+    rospy.init_node('hover')
 
-setpoint = SetPoint()
-control = Control()
+    setpoint = SetPoint()
+    control = Control()
 
-rospy.spin()
+    rospy.spin()
