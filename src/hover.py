@@ -73,20 +73,16 @@ class Hover(object):
             else:
                 xCM_red = 0
 
-            # # M['m10'] é o momento horizontal dos pixels (m * x / m = x)
-            # xCM_green = int(gM['m10']/gM['m00'])
-            # xCM_red = int(rM['m10']/rM['m00'])
-            
-            # Chamando o método que calcula o giro do Hovercraft
-            #if xCM_green != 0 and xCM_red !=0:
             xCM = (gM['m00']*xCM_green + rM['m00']*xCM_red)/(gM['m00'] + rM['m00'])
-            spin = self.controller(width, xCM)
-
-            #elif xCM_red == 0:
-             #   spin = self.controller(width, xCM_green)
-
-            #elif xCM_green == 0:
-             #   spin = self.controller(width, xCM_red)
+            
+            #TA DANDO PAU
+            if xCM_green == 0:
+                xCM = (0 + rM['m00']*xCM_red)/(gM['m00'] + rM['m00'])                
+            if xCM_red == 0:
+                xCM = (gM['m00']*xCM_green + 640)/(gM['m00'] + rM['m00'])
+            
+            error_list = []
+            spin = self.controller(width, xCM, error_list)
 
             # Publicando o giro
             self.twist.angular.z = spin
@@ -95,8 +91,6 @@ class Hover(object):
         else:
             self.twist.angular.z = 0.0
             self.cmd_vel_pub.publish(self.twist)
-
-        #print(xCM_green, xCM_red)
 
         try:
             # Desenhe o círculo na imagem
@@ -109,9 +103,13 @@ class Hover(object):
         cv2.imshow("Hover\'s Vision", image)
         # cv2.imshow("MASK", mask)
         cv2.waitKey(3)
-
+        
+        #xCM_red ~ 640
+        #xCM_green ~ 200
+        #print(xCM)
+             
     # Método responsável pelo controle do giro do Hovercraft
-    def controller(self, width, xCM):
+    def controller(self, width, xCM, error_list):
 
         # Constantes de controle PID
         kp = .001
@@ -122,13 +120,19 @@ class Hover(object):
         # Portanto, o erro é a diferença do centro das latinhas - o centro da imagem 
         #           centro da img   centro das latinhas
         
-        #VAMO LÁ
-
+        #CALCULANDO ERRO ATUAL
         if (xCM < width/2):
-            error = float(xCM)
+            last_error = float(xCM)
         
         elif (xCM > width/2):
-            error = float(xCM-(width))
+            last_error = float(xCM-(width))
+       
+        #CALCULANDO MÉDIA DOS ULTIMOS Xcm     
+        error_list.append(last_error)
+        if(len(error_list) > 10):
+            error_list.pop(0)
+            
+        error = sum(error_list) / len(error_list)
 
         # Se xCM_red > xCM_green, erro > 0. Portanto, deve virar a esquerda.
         # Se xCM_red < xCM_green, erro < 0. Portanto, deve virar a direita.
