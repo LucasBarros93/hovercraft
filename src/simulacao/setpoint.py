@@ -13,9 +13,6 @@ def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:flo
 
 
 class SetPoint(object): #qual é do 'object'?
-    
-    # Função que mapeia um valor de um intervalo para outro
-    map = lambda value, from_low, from_high, to_low, to_high: (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
 
     # Construtor da classe Hover
     def __init__(self)-> None:
@@ -88,14 +85,10 @@ class SetPoint(object): #qual é do 'object'?
 
         k = 0.1  #constante para ajustar a escala do erro
         
-        green_mass = gM['m00']
-        red_mass = rM['m00']
-        
-        
         error = (gM['m00'] - rM['m00']) * k
         
         mg = Int32()
-        mg.data = int(error) #ACHO Q N
+        mg.data = int(error)
         
         self.cmd_control__pub.publish(mg)
             
@@ -107,7 +100,7 @@ class SetPoint(object): #qual é do 'object'?
             print("no mass center found\n", e)
 
         # Mostra a imagem vista pelo hover
-        cv2.imshow("Hover\'s Vision", image)
+        cv2.imshow("Hover\'s Vision", green_largest_contours)
         # cv2.imshow("MASK", mask)
         cv2.waitKey(3)
          

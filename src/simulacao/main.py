@@ -2,8 +2,7 @@
 
 __author__ = "Lucas Barros"
 
-import rospy, cv2, cv_bridge
-import numpy as np
+import rospy
 
 from control import Control
 from setpoint import SetPoint

@@ -2,8 +2,7 @@
 
 __author__ = "Lucas Barros"
 
-import rospy, cv2, cv_bridge
-import numpy as np
+import rospy
 from std_msgs.msg import Int32
 from geometry_msgs.msg import Twist
 
@@ -12,9 +11,6 @@ class Control(object):
 
     # Construtor da classe Hover
     def __init__(self)-> None:
-
-        # Atalho converter a mensagem Image em imagem para OpenCV
-        self.bridge = cv_bridge.CvBridge()
 
         # "Escuta" (o tópico /camera/orange) as imagens da câmera e chama a função image_callback() para processá-las
         self.control_sub = rospy.Subscriber('/control', Int32, self.controller) #NÃO RECEBE IMAGE
@@ -43,7 +39,7 @@ class Control(object):
         kd = .00001
           
         #CALCULANDO MÉDIA DOS ULTIMOS Xcm     
-        self.error_list.append(last_error)             #OLHA AQUI PPORRA  
+        self.error_list.append(last_error)
         if(len(self.error_list) > 10):
             self.error_list.pop(0)
             
@@ -60,7 +56,7 @@ class Control(object):
         spin = kp * error + ki * self.int_error + kd * der_error
 
         self.twist.angular.z = spin
-        if(error == 0):
+        if error == 0:
             self.twist.angular.z = 0
             
         self.twist.linear.x = .4
