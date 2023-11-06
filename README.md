@@ -4,8 +4,11 @@ Freshmen initiation project at [Grupo SEMEAR](https://github.com/Grupo-SEMEAR-US
 
 
 ## Authors 
-|  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/135086783?v=4" width=115><br><sub>André Villalba</sub>](https://github.com/AndreBorba)  |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/68875016?v=4" width=115><br><sub>Lucas Barros</sub>](https://github.com/LucasBarros93)  |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/105023846?v=4" width=115><br><sub>Marco Garcia</sub>](https://github.com/marcogarcia2) |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/106834796?v=4" width=115><br><sub>Thiago Gonçalves</sub>](https://github.com/thiagokg314)  |
-| :---: | :---: | :---: | :---: |
+|  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/135086783?v=4" width=115><br><sub>André Villalba</sub>](https://github.com/AndreBorba)  |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/68875016?v=4" width=115><br><sub>Lucas Barros</sub>](https://github.com/LucasBarros93)  |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/105023846?v=4" width=115><br><sub>Marco Garcia</sub>](https://github.com/marcogarcia2) |
+| :---: | :---: | :---: |
+
+|  | [<img loading="lazy" src="https://avatars.githubusercontent.com/u/135029162?v=4" width=115><br><sub>Natália Fernandes</sub>](https://github.com/natalia-ssf) | [<img loading="lazy" src="https://avatars.githubusercontent.com/u/106834796?v=4" width=115><br><sub>Thiago Gonçalves</sub>](https://github.com/thiagokg314)  |
+| :---: | :---: | :---: |
 
 *Disclaimer: images without a specified source are photos taken by our group.*
 
@@ -81,11 +84,17 @@ The "heart" of our robot is a `Raspberry Pi`, which controls all the electronic 
 Below, we will provide more details about each part of Marquinhos.
 
 ### Mechanics
+| [<img loading="lazy" src="https://avatars.githubusercontent.com/u/135029162?v=4" width=115><br><sub>Natália Fernandes</sub>](https://github.com/natalia-ssf) |
+| :---: |
+
 (SONINHO ESCREVA AQUI)
 Detalhes da Mecânica
 Fotos do CAD, detalhes de como foi feito e fotos
 
 ### Electronics
+|  |
+| :---: |
+
 (CRAQUE ESCREVA AQUI)
 Especificar TODOS os componentes eletrônicos.
 Detalhes da Eletrônica, diagramas, fotos dos componentes
@@ -103,7 +112,7 @@ A comunicação entre o software e a eletrônica foi realizada através de algun
 |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/135086783?v=4" width=115><br><sub>André Villalba</sub>](https://github.com/AndreBorba)  |  [<img loading="lazy" src="https://avatars.githubusercontent.com/u/105023846?v=4" width=115><br><sub>Marco Garcia</sub>](https://github.com/marcogarcia2) |
 | :---: | :---: |
 
-The only sensor on our robot is the *camera*, so it's crucial that the computer vision code functions extremely well. We use the `OpenCV` library to process the images captured by the camera and generate the control setpoint. The team decided to set up the CROB corridor in the following way: green cans would be placed on the left side of the corridor, while red cans would be placed on the right side. These cans follow the curve, and the robot's control code operates based on the colors and the proximity of the cans.
+The only sensor on our robot is the *camera*, so it's crucial that the computer vision code functions extremely well. We used the `OpenCV` library to process the images captured by the camera and generate the control setpoint. The team decided to set up the CROB corridor in the following way: green cans would be placed on the left side of the corridor, while red cans would be placed on the right side. These cans follow the curve, and the robot's control code operates based on the colors and the proximity of the cans.
 
 Before testing with the actual robot, we conducted simulations in `Gazebo`, a simulation software compatible with ROS. The `PID control` was tuned based on the simulation, and the curve was being executed correctly. However, it's worth noting that the simulation was conducted with a wheeled robot and doesn't reflect a real hovercraft, let alone a real environment with external interferences. Therefore, the PID needs to be tuned with the actual robot.
 
@@ -112,7 +121,11 @@ Before testing with the actual robot, we conducted simulations in `Gazebo`, a si
 
 ## Testing the Robot
 
-
 ## Final
 
+Special thanks to:
 
+- Caio Florentin, [Github](https://github.com/caiofln)
+- Felipe Tommaselli, [Github](https://github.com/FelipeTommaselli)
+- Marco Tayar, [Github](https://github.com/marcotayar)
+- Sophia Benevides, [Github](https://github.com/)
