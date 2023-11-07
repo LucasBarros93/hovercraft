@@ -5,7 +5,7 @@ from project_ws.srv import MyService, MyServiceResponse
 from geometry_msgs.msg import Twist
 
 def handle_my_service(req):
-    if req.enable:
+    if req.enable_twist:
         # Crie uma mensagem Twist
         twist_msg = Twist()
 
@@ -20,7 +20,7 @@ def handle_my_service(req):
     else:
         # Lógica para desativar o Twist, se necessário
         twist_msg.linear.x = 0.0
-        return MyServiceResponse(None)
+        return MyServiceResponse(twist_msg)
 
 def my_service_server():
     rospy.init_node('my_service_server')
