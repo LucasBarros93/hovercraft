@@ -36,7 +36,6 @@ class ServoControl(object):
     # Construtor da classe Hover
     def __init__(self)-> None:
 
-        # "Escuta" (o tópico /camera/orange) as imagens da câmera e chama a função image_callback() para processá-las
         self.control_sub = rospy.Subscriber('/cmd_vel', Twist, self.servo_control)
         
     def servo_control(self, msg:Twist):

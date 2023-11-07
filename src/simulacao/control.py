@@ -35,7 +35,7 @@ class Control(object):
 
         # Constantes de controle PID
         kp = .00001 
-        ki = .00000001
+        ki = 0 # .00000001
         kd = .00001
           
         #CALCULANDO MÉDIA DOS ULTIMOS Xcm     

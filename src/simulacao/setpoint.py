@@ -24,7 +24,7 @@ class SetPoint(object): #qual é do 'object'?
         self.image_sub = rospy.Subscriber('/camera/rgb/image_raw', Image, self.image_callback) 
 
         # Publica no tópico /control
-        self.cmd_control__pub = rospy.Publisher('/control', Int32, queue_size=1)
+        self.cmd_control_pub = rospy.Publisher('/control', Int32, queue_size=1)
 
         # Definindo as cores desejadas
         self.green = np.array([[35, 100, 100], [85, 255, 255]])  #HSV
@@ -90,7 +90,7 @@ class SetPoint(object): #qual é do 'object'?
         mg = Int32()
         mg.data = int(error)
         
-        self.cmd_control__pub.publish(mg)
+        self.cmd_control_pub.publish(mg)
             
         try:
             # Desenhe o círculo na imagem
@@ -100,7 +100,7 @@ class SetPoint(object): #qual é do 'object'?
             print("no mass center found\n", e)
 
         # Mostra a imagem vista pelo hover
-        cv2.imshow("Hover\'s Vision", green_largest_contours)
+        cv2.imshow("Hover\'s Vision", image)
         # cv2.imshow("MASK", mask)
         cv2.waitKey(3)
          
