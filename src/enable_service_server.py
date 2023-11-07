@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import rospy
 from project_ws.srv import MyService, MyServiceResponse
@@ -11,7 +11,6 @@ def handle_my_service(req):
 
         # Personalize a mensagem Twist de acordo com sua necessidade
         twist_msg.linear.x = 0.2
-        rospy.init_node('hover', anonymous=True)
 
         # Publique a mensagem Twist no tópico desejado
         twist_pub.publish(twist_msg)
