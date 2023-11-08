@@ -61,7 +61,7 @@ class ESC:
         
         print("já era")
     
-    def control(self)-> None:
+    def manual_control(self)-> None:
         a = input()
         veloc = self.conn.get_servo_pulsewidth(self.pin1)
         
@@ -84,6 +84,10 @@ class ESC:
             
             print(veloc)
             a = input()
+            
+    def control(self, width:int)-> None:
+        if width < self.MAX_WIDTH and width > self.MIN_WIDTH:
+            self.pwm(width)
     
     def test(self) ->None:
         self.pwm(self.MIN_WIDTH)
@@ -121,7 +125,7 @@ class Servo:
         self.conn.set_servo_pulsewidth(self.pin ,2000) # um pouco horario
         time.sleep(3)
         
-    def control(self)-> None:
+    def manual_control(self)-> None:
         width = int(input('qual o "angulo" puto:'))
         
         #tem q converter pra graus, mas fdc
@@ -131,6 +135,10 @@ class Servo:
                 
             self.conn.set_servo_pulsewidth(self.pin, width)
             width = int(input('angulo novo: '))
+            
+    def control(self, pos:int)-> None:
+        if pos < self.MAX_WIDTH and pos > self.MIN_WIDTH:
+            self.conn.set_servo_pulsewidth(self.pin, pos)
         
         
 #NOTA: as escs estão sendo controlada separadamente, dps tem q ver isso
@@ -154,7 +162,7 @@ if __name__ == "__main__":
             
             sOUn = input("quer brincar?")
             if sOUn == 's':
-                escs.control()
+                escs.manual_control()
             
         elif inp == "servo":
             #print("vou callibrar a parada e testar")
@@ -162,7 +170,7 @@ if __name__ == "__main__":
             
             sOUn = input("quer brincar?")
             if sOUn == 's':
-                servo.control()
+                servo.manual_control()
             
         elif inp == "x":
             escs.halt()
