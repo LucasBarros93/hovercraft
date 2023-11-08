@@ -25,11 +25,3 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${OpenCV_INCLUDE_DIRS}
 )
-
-catkin_install_python(PROGRAMS src/my_service_server.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-catkin_install_python(PROGRAMS src/my_service_server.py src/my_service_client.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
