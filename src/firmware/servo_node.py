@@ -27,6 +27,8 @@ class ServoControl(object):
         
         if msg.linear.x != 0:
             self.esc.arm()
+        else:
+            self.esc.halt()
         
         self.servo.control(pos=pos)
         
