@@ -6,6 +6,7 @@ import rospy, cv2, cv_bridge
 import numpy as np
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Int32
+import pubcam
 
 def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:float)-> float:
     # Mapeia o valor de from_low/from_high para to_low/to_high
@@ -34,19 +35,16 @@ class SetPoint(object): #qual é do 'object'?
         
         # Converte a mensagem em numpy array
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        #image = pubcam.camera_calibration(image)
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         # Cria as máscaras que enxergarão verde e vermelho
         green_mask = cv2.inRange(hsv, self.green[0], self.green[1])
         red_mask = cv2.inRange(hsv, self.red[0], self.red[1])
-
-
-
         
         # Criando a máscara que terá os dois maiores contornos para o verde
         green_mask_largest = np.zeros_like(green_mask)
         green_contours, _ = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
 
         # Classificando os contornos pelo tamanho em ordem crescente
         green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)

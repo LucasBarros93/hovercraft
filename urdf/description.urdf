@@ -250,7 +250,7 @@
 		  <always_on>true</always_on>
 		  <visualize>true</visualize>             
 		  <camera>
-		      <horizontal_fov>1.073</horizontal_fov>
+		      <horizontal_fov>1.528</horizontal_fov>
 		      <image>
 		          <width>640</width>
 		          <height>480</height>
