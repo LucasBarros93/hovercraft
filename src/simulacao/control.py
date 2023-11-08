@@ -24,7 +24,7 @@ class Control(object):
         # Service pra para o bicho (e pra andar tbm?)
         # self.on_srv = rospy.Service("/turn_on", SetBool, self.on_off)
         self.on_srv = rospy.Service("/turn_on", Empty, self.on_off)
-        self.off = True
+        self.off = False
 
         # Cria um objeto twist do tipo Twist para definir a velocidade do robô
         self.twist = Twist()
