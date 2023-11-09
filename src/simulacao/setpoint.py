@@ -6,6 +6,7 @@ import rospy, cv2, cv_bridge
 import numpy as np
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Int32
+#import pubcam
 
 def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:float)-> float:
     # Mapeia o valor de from_low/from_high para to_low/to_high
@@ -34,14 +35,12 @@ class SetPoint(object): #qual é do 'object'?
         
         # Converte a mensagem em numpy array
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        #image = pubcam.camera_calibration(image)
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         # Cria as máscaras que enxergarão verde e vermelho
         green_mask = cv2.inRange(hsv, self.green[0], self.green[1])
         red_mask = cv2.inRange(hsv, self.red[0], self.red[1])
-
-
-
         
         # Criando a máscara que terá os dois maiores contornos para o verde
         green_mask_largest = np.zeros_like(green_mask)
@@ -50,10 +49,17 @@ class SetPoint(object): #qual é do 'object'?
 
         # Classificando os contornos pelo tamanho em ordem crescente
         green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
+        # Classificando os contornos pelo tamanho em ordem crescente
+        green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
 
         # Pegando os dois maiores contornos
         green_largest_contours = green_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
+        # Pegando os dois maiores contornos
+        green_largest_contours = green_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
 
+        # Desenhando os dois maiores contornos na máscara
+        for contour in green_largest_contours:
+            cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
         # Desenhando os dois maiores contornos na máscara
         for contour in green_largest_contours:
             cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
@@ -62,13 +68,21 @@ class SetPoint(object): #qual é do 'object'?
         red_mask_largest = np.zeros_like(red_mask)
         red_contours, _ = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         
+        
 
+        # Classificando os contornos pelo tamanho em ordem crescente
+        red_contours = sorted(red_contours, key = cv2.contourArea, reverse = True)
         # Classificando os contornos pelo tamanho em ordem crescente
         red_contours = sorted(red_contours, key = cv2.contourArea, reverse = True)
 
         # Pegando os dois maiores contornos
         red_largest_contours = red_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
+        # Pegando os dois maiores contornos
+        red_largest_contours = red_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
 
+        # Desenhando os dois maiores contornos na máscara
+        for contour in red_largest_contours:
+            cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
         # Desenhando os dois maiores contornos na máscara
         for contour in red_largest_contours:
             cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
@@ -90,16 +104,22 @@ class SetPoint(object): #qual é do 'object'?
         
         self.cmd_control_pub.publish(mg)
         total_mask = cv2.bitwise_and(image, image, mask=green_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
+        total_mask = cv2.bitwise_and(image, image, mask=green_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
             
         try:
             # Desenhe o círculo na imagem
             point = width/2 + _map(error, -40000, 40000, -320, 320)
             cv2.circle(total_mask, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
+            cv2.circle(total_mask, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
         except Exception as e:
             print("no mass center found\n", e)
 
         
+
+        
         # Mostra a imagem vista pelo hover
+        cv2.imshow("MASK", total_mask)
+        #cv2.imshow("Hover\'s Vision", image)
         cv2.imshow("MASK", total_mask)
         #cv2.imshow("Hover\'s Vision", image)
         # cv2.imshow("MASK", mask)
