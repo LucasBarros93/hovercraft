@@ -6,7 +6,7 @@ import rospy, cv2, cv_bridge
 import numpy as np
 from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Int32
-import pubcam
+#import pubcam
 
 def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:float)-> float:
     # Mapeia o valor de from_low/from_high para to_low/to_high
