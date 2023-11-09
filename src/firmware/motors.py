@@ -7,7 +7,7 @@ import pigpio
 #NOTA: n to sentando pino nenhum como output, sla se da merda, mas fica ligado
 
 class ESC:
-    MIN_WIDTH = 650
+    MIN_WIDTH = 1030 
     MAX_WIDTH = 2400
 
     def __init__(self, pin1:int, pin2:int = None)-> None:
@@ -32,15 +32,9 @@ class ESC:
 
     def calibrate(self)-> None:
         print('"menor" velocidade')
-        self.pwm(self.MIN_WIDTH)
-        time.sleep(5)
+        self.pwm(1000)
+        time.sleep(10)
         
-        print('"maior" velocidade')
-        self.pwm(self.MAX_WIDTH)
-        time.sleep(5)
-        
-        print("calibrado pai")
-        self.pwm(self.MIN_WIDTH)
         
     def arm(self)-> None:
         print("armando")
@@ -51,12 +45,11 @@ class ESC:
         
     def halt(self)-> None:
         print("parando")
-        self.pwm(self.MIN_WIDTH)
+        self.pwm(1000)
         
         print("ta safe")
-        self.pwm(0)
-        
         print("desligando GPIO.")
+        
         self.conn.stop()
         
         print("já era")
@@ -153,7 +146,7 @@ if __name__ == "__main__":
     
         if inp == "esc":
             #print("vou callibrar as paradas e testar")
-            #esc1.calibrate()
+            escs.calibrate()
             
             escs.arm()
             
@@ -166,7 +159,7 @@ if __name__ == "__main__":
             
         elif inp == "servo":
             #print("vou callibrar a parada e testar")
-            #servo.test()
+            servo.test()
             
             sOUn = input("quer brincar?")
             if sOUn == 's':
@@ -175,3 +168,9 @@ if __name__ == "__main__":
         elif inp == "x":
             escs.halt()
             break
+        
+#COM O FIO PRA TRÁS
+
+#meio 1700
+#45 esquerda 1000
+#45 direita 2400

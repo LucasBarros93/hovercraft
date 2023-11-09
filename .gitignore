@@ -1,3 +1,4 @@
 .vscode
 src/simulacao/__pycache__
+src/firmware/__pycache__
 .DS_Store

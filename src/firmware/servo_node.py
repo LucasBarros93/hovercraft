@@ -23,7 +23,7 @@ class ServoControl(object):
     def servo_control(self, msg:Twist):
         
         pos = msg.angular.z
-        pos = int(_map(pos, -1, 1, 600, 2400))
+        pos = int(_map(pos, -1, 1, 1000, 2400))
         
         if msg.linear.x != 0:
             self.esc.arm()

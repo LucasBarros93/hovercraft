@@ -17,7 +17,8 @@ class EscControl(object):
     def hover(self, req:Empty)-> EmptyResponse:
         self.off = not self.off
         
-        if self.off:
-            self.esc.halt()
-        else:
+        if not self.off:
+            self.esc.calibrate()
             self.esc.arm()
+            
+        return EmptyResponse()
