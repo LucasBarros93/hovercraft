@@ -46,34 +46,32 @@ class SetPoint(object): #qual é do 'object'?
         # Criando a máscara que terá os dois maiores contornos para o verde
         green_mask_largest = np.zeros_like(green_mask)
         green_contours, _ = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        if len(green_contours) >= 2:
+    
 
-            # Classificando os contornos pelo tamanho em ordem crescente
-            green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
+        # Classificando os contornos pelo tamanho em ordem crescente
+        green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
 
-            # Pegando os dois maiores contornos
-            green_largest_contours = green_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
+        # Pegando os dois maiores contornos
+        green_largest_contours = green_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
 
-            # Desenhando os dois maiores contornos na máscara
-            for contour in green_largest_contours:
-                cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
+        # Desenhando os dois maiores contornos na máscara
+        for contour in green_largest_contours:
+            cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
 
         # Criando a máscara que terá os dois maiores contornos para o vermelho
         red_mask_largest = np.zeros_like(red_mask)
         red_contours, _ = cv2.findContours(red_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        if len(red_contours) >= 2:
+        
 
-            # Classificando os contornos pelo tamanho em ordem crescente
-            red_contours = sorted(red_contours, key = cv2.contourArea, reverse = True)
+        # Classificando os contornos pelo tamanho em ordem crescente
+        red_contours = sorted(red_contours, key = cv2.contourArea, reverse = True)
 
-            # Pegando os dois maiores contornos
-            red_largest_contours = red_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
+        # Pegando os dois maiores contornos
+        red_largest_contours = red_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
 
-            # Desenhando os dois maiores contornos na máscara
-            for contour in red_largest_contours:
-                cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
-
-
+        # Desenhando os dois maiores contornos na máscara
+        for contour in red_largest_contours:
+            cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
 
 
         # Dimensões da tela
@@ -91,16 +89,19 @@ class SetPoint(object): #qual é do 'object'?
         mg.data = int(error)
         
         self.cmd_control_pub.publish(mg)
+        total_mask = cv2.bitwise_and(image, image, mask=green_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
             
         try:
             # Desenhe o círculo na imagem
             point = width/2 + _map(error, -40000, 40000, -320, 320)
-            cv2.circle(image, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
+            cv2.circle(total_mask, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
         except Exception as e:
             print("no mass center found\n", e)
 
+        
         # Mostra a imagem vista pelo hover
-        cv2.imshow("Hover\'s Vision", image)
+        cv2.imshow("MASK", total_mask)
+        #cv2.imshow("Hover\'s Vision", image)
         # cv2.imshow("MASK", mask)
         cv2.waitKey(3)
          

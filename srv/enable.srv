@@ -1,3 +1,0 @@
-bool enable_twist
----
-geometry_msgs/Twist twist

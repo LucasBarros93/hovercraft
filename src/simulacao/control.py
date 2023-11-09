@@ -6,6 +6,9 @@ import rospy
 from std_msgs.msg import Int32
 from geometry_msgs.msg import Twist
 
+# from std_srvs.srv import SetBool, SetBoolResponse
+from std_srvs.srv import Empty, EmptyResponse
+
 
 class Control(object):
 
@@ -17,6 +20,11 @@ class Control(object):
 
         # Publica no tópico /cmd_vel
         self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1) 
+        
+        # Service pra para o bicho (e pra andar tbm?)
+        # self.on_srv = rospy.Service("/turn_on", SetBool, self.on_off)
+        self.on_srv = rospy.Service("/turn_on", Empty, self.on_off)
+        self.off = False
 
         # Cria um objeto twist do tipo Twist para definir a velocidade do robô
         self.twist = Twist()
@@ -40,7 +48,7 @@ class Control(object):
           
         #CALCULANDO MÉDIA DOS ULTIMOS Xcm     
         self.error_list.append(last_error)
-        if(len(self.error_list) > 10):
+        if(len(self.error_list) > 20):
             self.error_list.pop(0)
             
         error = sum(self.error_list) / len(self.error_list)
@@ -56,11 +64,20 @@ class Control(object):
         spin = kp * error + ki * self.int_error + kd * der_error
 
         self.twist.angular.z = spin
+        self.twist.linear.x = 1.
+        
         if error == 0:
+            self.off = True
+                            
+        if self.off:
             self.twist.angular.z = 0
-            
-        self.twist.linear.x = .4
+            self.twist.linear.x = 0
         
         self.cmd_vel_pub.publish(self.twist)
         
+    def on_off(self, req:Empty)-> EmptyResponse:
+        #rospy.loginfo('to aqui porra')
         
+        self.off = not self.off
+        
+        return EmptyResponse()        
