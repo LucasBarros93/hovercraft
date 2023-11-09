@@ -2518,6 +2518,17 @@
           <wrench>0 0 -9.8 0 -0 0</wrench>
         </link>
       </model>
+      <light name='sun'>
+        <pose>0 0 10 0 -0 0</pose>
+      </light>
+    </state>
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>6.41828 -10.0726 6.90142 0 0.371643 1.68019</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
     <model name='latinha_verde_clone_5_clone'>
       <link name='link'>
         <inertial>
