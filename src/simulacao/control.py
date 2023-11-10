@@ -24,7 +24,7 @@ class Control(object):
         # Service pra para o bicho (e pra andar tbm?)
         # self.on_srv = rospy.Service("/turn_on", SetBool, self.on_off)
         self.on_srv = rospy.Service("/turn_on", Empty, self.on_off)
-        self.off = True
+        self.off = False
 
         # Cria um objeto twist do tipo Twist para definir a velocidade do robô
         self.twist = Twist()
@@ -42,9 +42,9 @@ class Control(object):
         last_error = msg.data
 
         # Constantes de controle PID
-        kp = .00005 
+        kp = .00004 
         ki = 0 # .00000001
-        kd = .00006
+        kd = .000005
           
         #CALCULANDO MÉDIA DOS ULTIMOS Xcm     
         self.error_list.append(last_error)
