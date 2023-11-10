@@ -14,11 +14,11 @@ def camera_calibration(img):
     w = img.shape[0]
     h = img.shape[1]
 
-    newcameramtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, distorcion_coef)
+    newcameramtx, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, distorcion_coef, (w,h), 1, (w,h))
     img = cv2.undistort(img, camera_matrix, distorcion_coef, None, newcameramtx)
 
     x, y, w, h = roi
-    img = img[y:y+h, x:x+w] 
+    #img = img[y:y+h, x:x+w] 
 
     return img
 
