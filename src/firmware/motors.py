@@ -7,7 +7,7 @@ import pigpio
 #NOTA: n to sentando pino nenhum como output, sla se da merda, mas fica ligado
 
 class ESC:
-    MIN_WIDTH = 1030 
+    MIN_WIDTH = 1040 
     MAX_WIDTH = 2400
 
     def __init__(self, pin1:int, pin2:int = None)-> None:
@@ -33,7 +33,7 @@ class ESC:
     def calibrate(self)-> None:
         print('"menor" velocidade')
         self.pwm(1000)
-        time.sleep(10)
+        time.sleep(3)
         
         
     def arm(self)-> None:
@@ -101,8 +101,8 @@ class ESC:
                 
 
 class Servo:
-    MIN_WIDTH = 600 #menor angulo em teoria
-    MAX_WIDTH = 2400 #maior angulo em teoria, cuidado ppra n quebrar essa porra
+    MIN_WIDTH = 1350 #menor angulo em teoria
+    MAX_WIDTH = 1850 #maior angulo em teoria, cuidado ppra n quebrar essa porra
      
     def __init__(self, pin:int)-> None:
         self.pin = pin
@@ -148,7 +148,7 @@ if __name__ == "__main__":
             #print("vou callibrar as paradas e testar")
             escs.calibrate()
             
-            escs.arm()
+            #escs.arm()
             
             #esc1.test()
             #esc2.test()
@@ -159,7 +159,7 @@ if __name__ == "__main__":
             
         elif inp == "servo":
             #print("vou callibrar a parada e testar")
-            servo.test()
+            #servo.test()
             
             sOUn = input("quer brincar?")
             if sOUn == 's':
@@ -169,8 +169,8 @@ if __name__ == "__main__":
             escs.halt()
             break
         
-#COM O FIO PRA TRÁS
+#OLHANDO DE TRÁS TRÁS
 
-#meio 1700
-#45 esquerda 1000
-#45 direita 2400
+#meio 1600
+#45 esquerda 1850
+#45 direita 1350
