@@ -19,7 +19,9 @@ if __name__ == "__main__":
     camera = Camera()
     servo = ServoControl()
     
+    rate = rospy.Rate(1) # 1 Hz
     while not rospy.is_shutdown():
         camera.publish_image()
+        rate.sleep()
     
     camera.close_camera()

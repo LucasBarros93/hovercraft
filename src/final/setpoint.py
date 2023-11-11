@@ -104,13 +104,14 @@ class SetPoint(object): #qual é do 'object'?
         mg.data = int(error)
         
         self.cmd_control_pub.publish(mg)
+        rospy.loginfo('erro: ' + str(error))
+        
         total_mask = cv2.bitwise_and(image, image, mask=green_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
         total_mask = cv2.bitwise_and(image, image, mask=green_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
             
         try:
             # Desenhe o círculo na imagem
             point = width/2 + _map(error, -40000, 40000, -320, 320)
-            cv2.circle(total_mask, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
             cv2.circle(total_mask, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
         except Exception as e:
             print("no mass center found\n", e)
@@ -120,10 +121,6 @@ class SetPoint(object): #qual é do 'object'?
         
         # Mostra a imagem vista pelo hover
         cv2.imshow("MASK", total_mask)
-        #cv2.imshow("Hover\'s Vision", image)
-        #cv2.imshow("MASK", total_mask)
-        #cv2.imshow("Hover\'s Vision", image)
-        # cv2.imshow("MASK", mask)
         #cv2.waitKey(3)
          
         #xCM_red ~ 640

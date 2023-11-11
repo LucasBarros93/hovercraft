@@ -23,15 +23,15 @@ class ServoControl(object):
     def servo_control(self, msg:Twist):
         
         pos = msg.angular.z
-        pos = int(_map(pos, -3, 3, 1000, 2000))
+        pos = int(_map(pos, -1, 1, 1000, 2000))
         
         # if msg.linear.x != 0:
         #     self.esc.arm()
         # else:
         #     self.esc.halt()
         
-        #self.servo.control(pos=pos)
+        self.servo.control(pos=pos)
         
-        print(pos)
+        rospy.loginfo('pos sero:' + str(pos))
         
         

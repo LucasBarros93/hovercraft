@@ -66,14 +66,16 @@ class Control(object):
         self.twist.angular.z = spin
         self.twist.linear.x = 0.8
         
-        if error == 0:
-            self.off = True
+        # if error == 0:
+        #     self.off = True
                             
         if self.off:
             self.twist.angular.z = 0
             self.twist.linear.x = 0
         
         self.cmd_vel_pub.publish(self.twist)
+        
+        rospy.loginfo('velocidade anguar:' + str(self.twist.angular.z))
         
     def on_off(self, req:Empty)-> EmptyResponse:
         #rospy.loginfo('to aqui porra')
