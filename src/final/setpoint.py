@@ -28,8 +28,8 @@ class SetPoint(object): #qual é do 'object'?
         self.cmd_control_pub = rospy.Publisher('/control', Int32, queue_size=1)
 
         # Definindo as cores desejadas
-        self.green = np.array([[160-20, 118-77, 153-77], [160+20, 118+77, 153+77]])  #HSV
-        self.red = np.array([[68-25, 147-77, 152-77], [68+25, 147-77, 152-77]]) #HSV
+        self.green = np.array([[140, 41, 39], [180, 195, 193]])  #HSV
+        self.red = np.array([[71, 105, 155], [71, 55, 35]]) #HSV
 
     def image_callback(self, msg:Image)-> None:
         
