@@ -6,6 +6,8 @@ import rospy, pigpio, time
 from geometry_msgs.msg import Twist
 from motors import Servo, ESC
 
+from std_srvs.srv import Empty, EmptyResponse
+
 def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:float)-> float:
     # Mapeia o valor de from_low/from_high para to_low/to_high
     return (value - from_low) * (to_high - to_low) / (from_high - from_low) + to_low
@@ -18,20 +20,29 @@ class ServoControl(object):
 
         self.control_sub = rospy.Subscriber('/cmd_vel', Twist, self.servo_control)
         self.servo = Servo(pin=18)
-        #self.esc = ESC(pin1= 13)
+        self.esc = ESC(pin1= 13)
+        
+        # Service pra para o bicho (e pra andar tbm?)
+        self.on_srv = rospy.Service("/turn_on", Empty, self.on_off)
+        self.off = True
         
     def servo_control(self, msg:Twist):
         
-        pos = msg.angular.z
-        pos = int(_map(pos, -1, 1, 1000, 2000))
+        if not self.off:
+            pos = msg.angular.z
+            pos = int(_map(pos, -1, 1, 1000, 2000))
+            
+            self.servo.control(pos=pos)
+            
+            rospy.loginfo('pos servo:' + str(pos))
         
-        # if msg.linear.x != 0:
-        #     self.esc.arm()
-        # else:
-        #     self.esc.halt()
+    
+    def on_off(self, req:Empty)-> EmptyResponse:        
+        self.off = not self.off
         
-        self.servo.control(pos=pos)
+        if self.off:
+            self.esc.halt()
+        else:
+            self.esc.arm()
         
-        rospy.loginfo('pos sero:' + str(pos))
-        
-        
+        return EmptyResponse()        

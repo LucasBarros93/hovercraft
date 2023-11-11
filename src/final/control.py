@@ -6,10 +6,6 @@ import rospy
 from std_msgs.msg import Int32
 from geometry_msgs.msg import Twist
 
-# from std_srvs.srv import SetBool, SetBoolResponse
-from std_srvs.srv import Empty, EmptyResponse
-
-
 class Control(object):
 
     # Construtor da classe Hover
@@ -21,11 +17,6 @@ class Control(object):
         # Publica no tópico /cmd_vel
         self.cmd_vel_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1) 
         
-        # Service pra para o bicho (e pra andar tbm?)
-        # self.on_srv = rospy.Service("/turn_on", SetBool, self.on_off)
-        self.on_srv = rospy.Service("/turn_on", Empty, self.on_off)
-        self.off = False
-
         # Cria um objeto twist do tipo Twist para definir a velocidade do robô
         self.twist = Twist()
         
@@ -69,17 +60,11 @@ class Control(object):
         # if error == 0:
         #     self.off = True
                             
-        if self.off:
-            self.twist.angular.z = 0
-            self.twist.linear.x = 0
+        # if self.off:
+        #     self.twist.angular.z = 0
+        #     self.twist.linear.x = 0
         
         self.cmd_vel_pub.publish(self.twist)
         
-        rospy.loginfo('velocidade anguar:' + str(self.twist.angular.z))
-        
-    def on_off(self, req:Empty)-> EmptyResponse:
-        #rospy.loginfo('to aqui porra')
-        
-        self.off = not self.off
-        
-        return EmptyResponse()        
+        rospy.loginfo('velocidade angular:' + str(self.twist.angular.z))
+      

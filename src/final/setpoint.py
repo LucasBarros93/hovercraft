@@ -28,8 +28,8 @@ class SetPoint(object): #qual é do 'object'?
         self.cmd_control_pub = rospy.Publisher('/control', Int32, queue_size=1)
 
         # Definindo as cores desejadas
-        self.green = np.array([[140, 41, 39], [180, 195, 193]])  #HSV
-        self.red = np.array([[71, 105, 155], [71, 55, 35]]) #HSV
+        self.red = np.array([[140, 41, 39], [180, 195, 193]])  #HSV
+        self.green = np.array([[71, 55, 35], [91, 105, 155]]) #HSV
 
     def image_callback(self, msg:Image)-> None:
         
@@ -113,8 +113,9 @@ class SetPoint(object): #qual é do 'object'?
         cv2.circle(total_mask, (int(np.ceil(point)), int(np.ceil(height/2))), 10, (0, 0, 255), -1)  # O valor -1 preenche o círculo
         
         # Mostra a imagem vista pelo hover
-        cv2.imshow("MASK", total_mask)
-        #cv2.waitKey(3)
+        cv2.imshow("Mask", total_mask)
+        cv2.imshow("Image", image)
+        cv2.waitKey(3)
          
         #xCM_red ~ 640
         #xCM_green ~ 200

@@ -37,7 +37,7 @@ class ESC:
         
         
     def arm(self)-> None:
-        print("armando")
+        #print("armando")
         self.pwm(self.MIN_WIDTH)
         time.sleep(2)
         
@@ -50,7 +50,7 @@ class ESC:
         print("ta safe")
         print("desligando GPIO.")
         
-        self.conn.stop()
+        #self.conn.stop()
         
         print("já era")
     
