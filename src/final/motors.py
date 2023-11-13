@@ -140,35 +140,14 @@ if __name__ == "__main__":
 
     servo = Servo(pin=18)
     
-    escs = ESC(pin1=12, pin2=13)
-    while True:
-        inp = input("vai mexer onde?")
+    escs = ESC(pin1=12)
     
-        if inp == "esc":
-            #print("vou callibrar as paradas e testar")
-            escs.calibrate()
+    #print("vou callibrar as paradas e testar")
+    escs.calibrate()
+    escs.manual_control()
+    
+    escs.halt()
             
-            #escs.arm()
-            
-            #esc1.test()
-            #esc2.test()
-            
-            sOUn = input("quer brincar?")
-            if sOUn == 's':
-                escs.manual_control()
-            
-        elif inp == "servo":
-            #print("vou callibrar a parada e testar")
-            #servo.test()
-            
-            sOUn = input("quer brincar?")
-            if sOUn == 's':
-                servo.manual_control()
-            
-        elif inp == "x":
-            escs.halt()
-            break
-        
 #OLHANDO DE TRÁS TRÁS
 
 #meio 1600
