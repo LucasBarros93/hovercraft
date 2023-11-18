@@ -8,7 +8,7 @@ import pigpio
 
 class ESC:
     MIN_WIDTH = 1040 
-    MAX_WIDTH = 2400
+    MAX_WIDTH = 2000
 
     def __init__(self, pin1:int, pin2:int = None)-> None:
         self.conn = pigpio.pi()
@@ -140,13 +140,17 @@ if __name__ == "__main__":
 
     servo = Servo(pin=18)
     
-    escs = ESC(pin1=12)
+    escbaixo = ESC(pin1=13)
+    escbunda = ESC(pin1=12)
     
-    #print("vou callibrar as paradas e testar")
-    escs.calibrate()
-    escs.manual_control()
+    escbaixo.calibrate()
+    escbunda.calibrate()
     
-    escs.halt()
+    escbaixo.manual_control()
+    escbunda.manual_control()
+    
+    escbaixo.halt()
+    escbunda.halt()
             
 #OLHANDO DE TRÁS TRÁS
 
