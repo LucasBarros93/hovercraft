@@ -6,12 +6,16 @@ from pubcam import camera_calibration
 def nothing(x):
     pass
 cv2.namedWindow('Image')
+cv2.createTrackbar('Hue1', 'Image', 0, 179, nothing)
+cv2.createTrackbar('Saturation1', 'Image', 0, 255, nothing)
+cv2.createTrackbar('Value1', 'Image', 0, 255, nothing)
 cv2.createTrackbar('Hue', 'Image', 0, 179, nothing)
 cv2.createTrackbar('Saturation', 'Image', 0, 255, nothing)
 cv2.createTrackbar('Value', 'Image', 0, 255, nothing)
+
 def mostrar_video_camera():
     # Abre a câmera
-    cap = cv2.VideoCapture(2)
+    cap = cv2.VideoCapture(0)
 
     # Verifica se a câmera foi aberta com sucesso
     if not cap.isOpened():
@@ -31,12 +35,15 @@ def mostrar_video_camera():
         
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
+        h1 = cv2.getTrackbarPos('Hue1', 'Image')
         h = cv2.getTrackbarPos('Hue', 'Image')
+        s1 = cv2.getTrackbarPos('Saturation1', 'Image')
         s = cv2.getTrackbarPos('Saturation', 'Image')
+        v1 = cv2.getTrackbarPos('Value1', 'Image')
         v = cv2.getTrackbarPos('Value', 'Image')
 
-        lower_green = np.array([h-20, s-77, v-77])
-        upper_green = np.array([h+20, s+77, v+77])
+        lower_green = np.array([h, s, v])
+        upper_green = np.array([h1, s1, v1])
 
         mask = cv2.inRange(hsv, lower_green, upper_green)
         result = cv2.bitwise_and(frame, frame, mask=mask)
