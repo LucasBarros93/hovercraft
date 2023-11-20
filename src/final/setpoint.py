@@ -29,7 +29,7 @@ class SetPoint(object): #qual é do 'object'?
 
         # Definindo as cores desejadas
         self.red = np.array([[140, 41, 39], [180, 195, 193]])  #HSV
-        self.green = np.array([[88, 70, 47], [154, 178, 255]]) #HSV
+        self.green = np.array([[88, 84, 47], [154, 178, 255]]) #HSV
 
     def image_callback(self, msg:Image)-> None:
         
@@ -46,8 +46,8 @@ class SetPoint(object): #qual é do 'object'?
         green_mask = cv2.inRange(hsv, self.green[0], self.green[1])
         red_mask = cv2.inRange(hsv, self.red[0], self.red[1])
         
-        green_mask[0:int(height/2), :] = 0 
-        red_mask[0:int(height/2), :] = 0 
+        green_mask[0:int(3*height/4), :] = 0 
+        red_mask[0:int(1*height/2), :] = 0 
         
         # Criando a máscara que terá os dois maiores contornos para o verde
         green_mask_largest = np.zeros_like(green_mask)
