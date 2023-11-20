@@ -16,11 +16,11 @@ if __name__ == "__main__":
     rospy.init_node('hover')
 
     setpoint = SetPoint()
-    control = Control()
+    #control = Control()
     camera = Camera()
-    servo = ServoControl()
+    #servo = ServoControl()
     
-    esc = EscControl()
+    #esc = EscControl()
     
     rate = rospy.Rate(5) # 5 Hz
     while not rospy.is_shutdown():

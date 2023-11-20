@@ -101,8 +101,8 @@ class ESC:
                 
 
 class Servo:
-    MIN_WIDTH = 600 #menor angulo em teoria
-    MAX_WIDTH = 2400 #maior angulo em teoria, cuidado ppra n quebrar essa porra
+    MIN_WIDTH = 1050 #menor angulo em teoria
+    MAX_WIDTH = 1650 #maior angulo em teoria, cuidado ppra n quebrar essa porra
      
     def __init__(self, pin:int)-> None:
         self.pin = pin
@@ -119,15 +119,15 @@ class Servo:
         time.sleep(3)
         
     def manual_control(self)-> None:
-        width = int(input('qual o "angulo" puto:'))
+        width = input('qual o "angulo" puto:')
         
         #tem q converter pra graus, mas fdc
         while width != "x":
-            while width < self.MIN_WIDTH or width > self.MAX_WIDTH:
+            while int(width) < self.MIN_WIDTH or int(width) > self.MAX_WIDTH:
                 width = input("ta fazendo merda: ")    
                 
-            self.conn.set_servo_pulsewidth(self.pin, width)
-            width = int(input('angulo novo: '))
+            self.conn.set_servo_pulsewidth(self.pin, int(width))
+            width = input('angulo novo: ')
             
     def control(self, pos:int)-> None:
         if pos < self.MAX_WIDTH and pos > self.MIN_WIDTH:
@@ -140,16 +140,24 @@ if __name__ == "__main__":
 
     servo = Servo(pin=18)
     
-    escs = ESC(pin1=12)
+    escbaixo = ESC(pin1=12)
+    escbunda = ESC(pin1=13)
     
-    #print("vou callibrar as paradas e testar")
-    escs.calibrate()
-    escs.manual_control()
+    escbaixo.calibrate()
+    escbunda.calibrate()
     
-    escs.halt()
-            
-#OLHANDO DE TRÁS TRÁS
+    servo.control(pos=1350)
 
-#meio 1600
-#45 esquerda 1850
-#45 direita 1350
+    escbaixo.manual_control()
+    escbunda.manual_control()
+    
+    servo.manual_control()
+    
+    escbaixo.halt()
+    escbunda.halt()
+    
+        
+
+# max 'esquerda' 1650
+# max 'direita'  1050
+# meio 1350
