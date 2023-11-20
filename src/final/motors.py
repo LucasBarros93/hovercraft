@@ -8,7 +8,7 @@ import pigpio
 
 class ESC:
     MIN_WIDTH = 1040 
-    MAX_WIDTH = 2400
+    MAX_WIDTH = 2000
 
     def __init__(self, pin1:int, pin2:int = None)-> None:
         self.conn = pigpio.pi()
