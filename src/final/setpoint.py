@@ -29,7 +29,7 @@ class SetPoint(object): #qual é do 'object'?
 
         # Definindo as cores desejadas
         self.red = np.array([[140, 41, 39], [180, 195, 193]])  #HSV
-        self.green = np.array([[71, 55, 35], [91, 105, 155]]) #HSV
+        self.green = np.array([[88, 70, 47], [154, 178, 255]]) #HSV
 
     def image_callback(self, msg:Image)-> None:
         
@@ -37,11 +37,17 @@ class SetPoint(object): #qual é do 'object'?
         image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
         #_, image = self.cap.read()
         
+        # Dimensões da tela
+        height, width, depth = image.shape
+
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         # Cria as máscaras que enxergarão verde e vermelho
         green_mask = cv2.inRange(hsv, self.green[0], self.green[1])
         red_mask = cv2.inRange(hsv, self.red[0], self.red[1])
+        
+        green_mask[0:int(height/2), :] = 0 
+        red_mask[0:int(height/2), :] = 0 
         
         # Criando a máscara que terá os dois maiores contornos para o verde
         green_mask_largest = np.zeros_like(green_mask)
@@ -87,10 +93,6 @@ class SetPoint(object): #qual é do 'object'?
         # Desenhando os dois maiores contornos na máscara
         for contour in red_largest_contours:
             cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
-
-
-        # Dimensões da tela
-        height, width, depth = image.shape
 
         # Centro de massa dos pixels
         gM = cv2.moments(green_mask_largest)
