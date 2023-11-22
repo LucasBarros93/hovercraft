@@ -19,7 +19,7 @@ class EscControl(object):
         
         if not self.off:
             self.esc.calibrate()
-            self.esc.arm()
+            self.esc.pwm(1800)
             
         else:
             self.esc.halt()

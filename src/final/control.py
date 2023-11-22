@@ -33,9 +33,9 @@ class Control(object):
         last_error = msg.data
 
         # Constantes de controle PID
-        kp = .00004 
+        kp = 1 
         ki = 0 # .00000001
-        kd = .000005
+        kd = 0 #.000005
           
         #CALCULANDO MÉDIA DOS ULTIMOS Xcm     
         self.error_list.append(last_error)

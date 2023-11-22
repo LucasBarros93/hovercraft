@@ -30,7 +30,7 @@ class ServoControl(object):
         
         if not self.off:
             pos = msg.angular.z
-            pos = int(_map(pos, -1, 1, 1000, 2000))
+            pos = int(_map(pos, -1, 1, 1050, 1650))
             
             self.servo.control(pos=pos)
             
@@ -43,6 +43,6 @@ class ServoControl(object):
         if self.off:
             self.esc.halt()
         else:
-            self.esc.arm()
+            self.esc.pwm(1600)
         
         return EmptyResponse()        

@@ -140,21 +140,21 @@ if __name__ == "__main__":
 
     servo = Servo(pin=18)
     
-    escbaixo = ESC(pin1=12)
-    escbunda = ESC(pin1=13)
+    #escbaixo = ESC(pin1=12)
+    #escbunda = ESC(pin1=13)
     
-    escbaixo.calibrate()
-    escbunda.calibrate()
+    #escbaixo.calibrate()
+    #escbunda.calibrate()
     
     servo.control(pos=1350)
 
-    escbaixo.manual_control()
-    escbunda.manual_control()
+    #escbaixo.manual_control()
+    #escbunda.manual_control()
     
     servo.manual_control()
     
-    escbaixo.halt()
-    escbunda.halt()
+    #escbaixo.halt()
+    #escbunda.halt()
     
         
 

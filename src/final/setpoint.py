@@ -28,8 +28,8 @@ class SetPoint(object): #qual é do 'object'?
         self.cmd_control_pub = rospy.Publisher('/control', Int32, queue_size=1)
 
         # Definindo as cores desejadas
-        self.red = np.array([[140, 41, 39], [180, 195, 193]])  #HSV
-        self.green = np.array([[88, 84, 47], [154, 178, 255]]) #HSV
+        self.red = np.array([[0, 167, 0], [23, 255, 255]])  #HSV
+        self.blue = np.array([[91, 107, 0], [137, 255, 185]]) #HSV
 
     def image_callback(self, msg:Image)-> None:
         
@@ -43,33 +43,35 @@ class SetPoint(object): #qual é do 'object'?
         hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
         # Cria as máscaras que enxergarão verde e vermelho
-        green_mask = cv2.inRange(hsv, self.green[0], self.green[1])
+        blue_mask = cv2.inRange(hsv, self.blue[0], self.blue[1])
         red_mask = cv2.inRange(hsv, self.red[0], self.red[1])
         
-        green_mask[0:int(3*height/4), :] = 0 
+        '''
+        blue_mask[0:int(3*height/4), :] = 0 
         red_mask[0:int(1*height/2), :] = 0 
+        ''' 
         
         # Criando a máscara que terá os dois maiores contornos para o verde
-        green_mask_largest = np.zeros_like(green_mask)
-        green_contours, _ = cv2.findContours(green_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        blue_mask_largest = np.zeros_like(blue_mask)
+        blue_contours, _ = cv2.findContours(blue_mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
 
         # Classificando os contornos pelo tamanho em ordem crescente
-        green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
+        blue_contours = sorted(blue_contours, key = cv2.contourArea, reverse = True)
         # Classificando os contornos pelo tamanho em ordem crescente
-        green_contours = sorted(green_contours, key = cv2.contourArea, reverse = True)
+        blue_contours = sorted(blue_contours, key = cv2.contourArea, reverse = True)
 
         # Pegando os dois maiores contornos
-        green_largest_contours = green_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
+        blue_largest_contours = blue_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
         # Pegando os dois maiores contornos
-        green_largest_contours = green_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
+        blue_largest_contours = blue_contours[:2] #TINHA UM 2 AI, SÓ MUUDEI PRA 1, ESPERO Q DE BOM
 
         # Desenhando os dois maiores contornos na máscara
-        for contour in green_largest_contours:
-            cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
+        for contour in blue_largest_contours:
+            cv2.drawContours(blue_mask_largest, [contour], 0, 255, -1)
         # Desenhando os dois maiores contornos na máscara
-        for contour in green_largest_contours:
-            cv2.drawContours(green_mask_largest, [contour], 0, 255, -1)
+        for contour in blue_largest_contours:
+            cv2.drawContours(blue_mask_largest, [contour], 0, 255, -1)
 
         # Criando a máscara que terá os dois maiores contornos para o vermelho
         red_mask_largest = np.zeros_like(red_mask)
@@ -95,12 +97,12 @@ class SetPoint(object): #qual é do 'object'?
             cv2.drawContours(red_mask_largest, [contour], 0, 255, -1)
 
         # Centro de massa dos pixels
-        gM = cv2.moments(green_mask_largest)
+        bM = cv2.moments(blue_mask_largest)
         rM = cv2.moments(red_mask_largest)
 
         k = 0.1  #constante para ajustar a escala do erro
         
-        error = (gM['m00'] - rM['m00']) * k
+        error = (bM['m00'] - rM['m00']) * k
         
         mg = Int32()
         mg.data = int(error)
@@ -108,7 +110,7 @@ class SetPoint(object): #qual é do 'object'?
         self.cmd_control_pub.publish(mg)
         rospy.loginfo('erro: ' + str(error))
         
-        total_mask = cv2.bitwise_and(image, image, mask=green_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
+        total_mask = cv2.bitwise_and(image, image, mask=blue_mask_largest) + cv2.bitwise_and(image, image, mask=red_mask_largest)
             
         # Desenhe o círculo na imagem
         point = width/2 + _map(error, -40000, 40000, -320, 320)
@@ -120,5 +122,5 @@ class SetPoint(object): #qual é do 'object'?
         cv2.waitKey(3)
          
         #xCM_red ~ 640
-        #xCM_green ~ 200
+        #xCM_blue ~ 200
         #print(xCM)
