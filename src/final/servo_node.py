@@ -15,14 +15,14 @@ def _map(value:float, from_low:float, from_high:float, to_low:float, to_high:flo
 
 class ServoControl(object):
 
-    # Construtor da classe Hover
+    # Construtor da classe Servo
     def __init__(self)-> None:
 
         self.control_sub = rospy.Subscriber('/cmd_vel', Twist, self.servo_control)
         self.servo = Servo(pin=18)
         self.esc = ESC(pin1= 13)
         
-        # Service pra para o bicho (e pra andar tbm?)
+        # Service pra parar o bicho (e pra andar tbm?)
         self.on_srv = rospy.Service("/turn_on", Empty, self.on_off)
         self.off = True
         
@@ -30,7 +30,7 @@ class ServoControl(object):
         
         if not self.off:
             pos = msg.angular.z
-            pos = int(_map(pos, -1, 1, 1050, 1650))
+            pos = int(_map(pos, -1, 1, 1050, 1650)) # valores mínimo e máximo do servo
             
             self.servo.control(pos=pos)
             

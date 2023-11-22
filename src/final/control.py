@@ -20,39 +20,36 @@ class Control(object):
         # Cria um objeto twist do tipo Twist para definir a velocidade do robô
         self.twist = Twist()
         
-        # Definindo algumas variáveis para auxiliar no controle
+        # Definindo variáveis para auxiliar no controle
         self.error_list = []
         
-        self.prev_error = 0.0
-        self.int_error = 0.0  
+        #self.prev_error = 0.0
+        # self.int_error = 0.0  
          
         
     # Método responsável pelo controle PID do giro do Hovercraft
     def controller(self, msg:Int32)-> None:
         
-        last_error = msg.data
+        error = msg.data
 
         # Constantes de controle PID
         kp = 1 
         ki = 0 # .00000001
         kd = 0 #.000005
           
-        #CALCULANDO MÉDIA DOS ULTIMOS Xcm     
-        self.error_list.append(last_error)
-        if(len(self.error_list) > 20):
+        # Lista de erros (evitando overshoot)     
+        self.error_list.append(error)
+        if(len(self.error_list) > 10):
             self.error_list.pop(0)
             
-        error = sum(self.error_list) / len(self.error_list)
+        # Média dos 10 últimos erros
+        mean_error = sum(self.error_list) / len(self.error_list)
 
         # Cálculo da integral do erro
-        self.int_error = self.int_error + error
-
-        # Cálculo da derivada do erro
-        der_error = error - self.prev_error
-        self.prev_error = error
+        #self.int_error = self.int_error + error
 
         # Equação do controle PID
-        spin = kp * error + ki * self.int_error + kd * der_error
+        spin = kp * mean_error + kd * mean_error # mudar depois para kp * error
 
         self.twist.angular.z = spin
         self.twist.linear.x = 0.8

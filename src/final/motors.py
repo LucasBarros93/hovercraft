@@ -4,10 +4,11 @@ import time
 import pigpio
 
 
-#NOTA: n to sentando pino nenhum como output, sla se da merda, mas fica ligado
+#NOTA: Não estou setando pino nenhum como output, fica ligado nisso
 
 class ESC:
-    MIN_WIDTH = 1040 
+
+    MIN_WIDTH = 1040 # Abaixo de 1040 a ESC não liga
     MAX_WIDTH = 2000
 
     def __init__(self, pin1:int, pin2:int = None)-> None:
@@ -31,7 +32,7 @@ class ESC:
         
 
     def calibrate(self)-> None:
-        print('"menor" velocidade')
+        print('"Menor" velocidade')
         self.pwm(1000)
         time.sleep(3)
         
@@ -41,42 +42,42 @@ class ESC:
         self.pwm(self.MIN_WIDTH)
         time.sleep(2)
         
-        print("armado")
+        print("Armado")
         
     def halt(self)-> None:
-        print("parando")
+        print("Parando")
         self.pwm(1000)
         
-        print("ta safe")
-        print("desligando GPIO.")
+        print("Ta safe")
+        print("Desligando GPIO.")
         
         #self.conn.stop()
         
-        print("já era")
+        print("Já era")
     
     def manual_control(self)-> None:
-        a = input()
+        char = input()
         veloc = self.conn.get_servo_pulsewidth(self.pin1)
         
-        while a != 'x':
-            if a == 'q':
+        while char != 'x':
+            if char == 'q':
                 veloc += 10
                 self.pwm(veloc)
             
-            if a == 'a':
+            if char == 'a':
                 veloc -= 10
                 self.pwm(veloc)
             
-            if a == 'e':
+            if char == 'e':
                 veloc += 100
                 self.pwm(veloc)
             
-            if a == 'd':
+            if char == 'd':
                 veloc -= 100
                 self.pwm(veloc)
             
             print(veloc)
-            a = input()
+            char = input()
             
     def control(self, width:int)-> None:
         if width < self.MAX_WIDTH and width > self.MIN_WIDTH:
@@ -101,8 +102,8 @@ class ESC:
                 
 
 class Servo:
-    MIN_WIDTH = 1050 #menor angulo em teoria
-    MAX_WIDTH = 1650 #maior angulo em teoria, cuidado ppra n quebrar essa porra
+    MIN_WIDTH = 1050 # Menor ângulo
+    MAX_WIDTH = 1650 # Maior ângulo
      
     def __init__(self, pin:int)-> None:
         self.pin = pin
@@ -119,7 +120,7 @@ class Servo:
         time.sleep(3)
         
     def manual_control(self)-> None:
-        width = input('qual o "angulo" puto:')
+        width = input('Qual o "ângulo":')
         
         #tem q converter pra graus, mas fdc
         while width != "x":
@@ -127,7 +128,7 @@ class Servo:
                 width = input("ta fazendo merda: ")    
                 
             self.conn.set_servo_pulsewidth(self.pin, int(width))
-            width = input('angulo novo: ')
+            width = input('Ângulo novo: ')
             
     def control(self, pos:int)-> None:
         if pos < self.MAX_WIDTH and pos > self.MIN_WIDTH:
