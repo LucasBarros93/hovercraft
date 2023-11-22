@@ -133,9 +133,13 @@ class Servo:
     def control(self, pos:int)-> None:
         if pos < self.MAX_WIDTH and pos > self.MIN_WIDTH:
             self.conn.set_servo_pulsewidth(self.pin, pos)
+
+        elif pos < self.MIN_WIDTH:
+            self.conn.set_servo_pulsewidth(self.pin, self.MIN_WIDTH)
         
+        elif pos > self.MAX_WIDTH:
+            self.conn.set_servo_pulsewidth(self.pin, self.MAX_WIDTH)
         
-#NOTA: as escs estão sendo controlada separadamente, dps tem q ver isso
 
 if __name__ == "__main__":
 
